@@ -485,7 +485,7 @@
   function initNavTheme() {
     var nav = document.querySelector(".nav");
     if (!nav) return;
-    var darks = document.querySelectorAll(".hero-dark, .lineup");
+    var darks = document.querySelectorAll(".hero-dark, .lineup, .page-hero");
     if (!darks.length) return;
 
     var ticking = false;
