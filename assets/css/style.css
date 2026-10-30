@@ -301,27 +301,33 @@ ul { margin: 0; padding: 0; list-style: none; }
 .band-names a { color: rgba(255, 255, 255, 0.95); font-size: clamp(1.05rem, 1.6vw, 1.35rem); transition: color .2s; }
 .band-names a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 
-/* Scroll-driven lineup — sticky stage, 5 products */
+/* Scroll-driven lineup — horizontal film strip */
 .lineup {
   position: relative;
   background: #0a0a0a;
   color: #fff;
-  height: 440vh;
+  height: 400vh;
 }
 .lineup-sticky {
   position: sticky;
   top: 0;
   height: 100svh;
-  display: flex;
-  align-items: center;
   overflow: hidden;
 }
-.lineup-stage {
+.lineup-track {
+  display: flex;
+  width: 500%;
+  height: 100%;
+  will-change: transform;
+}
+.lineup-frame {
+  flex: 0 0 20%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: clamp(2rem, 6vw, 6rem);
-  width: 100%;
+  padding: 0 clamp(1.25rem, 5vw, 3rem);
+  box-sizing: border-box;
 }
 .lineup-visual {
   position: relative;
@@ -331,7 +337,6 @@ ul { margin: 0; padding: 0; list-style: none; }
   justify-content: center;
 }
 .lineup-img {
-  position: absolute;
   height: 100%;
   width: auto;
   max-width: 100%;
@@ -341,11 +346,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   padding: 1.1rem;
   box-sizing: border-box;
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  transform: scale(0.95);
-  transition: opacity .55s ease, transform .55s ease;
 }
-.lineup-img.is-active { opacity: 1; transform: none; }
 .lineup-count { font-size: var(--fs-sm); color: rgba(255, 255, 255, 0.5); margin: 0 0 0.8rem; }
 .lineup-name {
   font-size: clamp(2.4rem, 6vw, 5rem);
@@ -591,8 +592,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 @media (max-width: 719px) {
   .band-grid { grid-template-columns: 1fr; }
-  .lineup { height: 380vh; }
-  .lineup-stage { grid-template-columns: 1fr; gap: 1.5rem; }
+  .lineup { height: 320vh; }
+  .lineup-frame { grid-template-columns: 1fr; gap: 1.5rem; }
   .lineup-visual { height: 42vh; }
   .closeup-grid { grid-template-columns: 1fr; gap: 1.5rem; }
   .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); }

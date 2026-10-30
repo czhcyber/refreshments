@@ -401,64 +401,57 @@
   function initLineup() {
     var section = document.getElementById("lineup");
     if (!section) return;
-    var imgs = section.querySelectorAll(".lineup-img");
-    var nameEl = document.getElementById("lineup-name");
-    var yearEl = document.getElementById("lineup-year");
-    var tagEl = document.getElementById("lineup-tag");
-    var countEl = document.getElementById("lineup-count");
-    if (!imgs.length || !nameEl) return;
+    var track = document.getElementById("lineup-track");
+    if (!track) return;
+    var names = track.querySelectorAll(".lineup-name");
+    if (!names.length) return;
 
-    var DATA = [
-      { name: "Coca-Cola", year: "Since 1886", tag: "The original spark." },
-      { name: "Sprite", year: "Since 1961", tag: "Crisp lemon-lime clarity." },
-      { name: "Fanta", year: "Since 1940", tag: "Bright, juicy orange." },
-      { name: "Minute Maid", year: "Since 1945", tag: "Real orange, real pulp." },
-      { name: "Coca-Cola Cherry", year: "Since 1985", tag: "Cola with a cherry twist." }
-    ];
+    names.forEach(function (n) { n.setAttribute("data-text", n.textContent); });
+
+    if (!hasGsap) return;
 
     var current = -1;
-    var ticking = false;
+    var scrambleTimer = null;
 
-    function setActive(i) {
-      if (i === current) return;
-      current = i;
-      imgs.forEach(function (img, idx) {
-        img.classList.toggle("is-active", idx === i);
-      });
-      var d = DATA[i];
-      nameEl.textContent = d.name;
-      yearEl.textContent = d.year;
-      tagEl.textContent = d.tag;
-      if (countEl) {
-        countEl.textContent = String(i + 1).padStart(2, "0") + " / " + String(DATA.length).padStart(2, "0");
-      }
+    function scramble(el) {
+      var text = el.getAttribute("data-text");
+      if (!text) return;
+      var glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&";
+      var step = 0;
+      var total = 15;
+      if (scrambleTimer) clearInterval(scrambleTimer);
+      scrambleTimer = setInterval(function () {
+        var out = "";
+        for (var i = 0; i < text.length; i++) {
+          out += (step >= total || Math.random() < step / total) ? text.charAt(i) : glyphs.charAt(Math.floor(Math.random() * glyphs.length));
+        }
+        el.textContent = out;
+        step++;
+        if (step > total) {
+          clearInterval(scrambleTimer);
+          scrambleTimer = null;
+          el.textContent = text;
+        }
+      }, 36);
     }
 
-    if (hasGsap) {
-      ScrollTrigger.create({
+    gsap.to(track, {
+      xPercent: -80,
+      ease: "none",
+      scrollTrigger: {
         trigger: section,
         start: "top top",
         end: "bottom bottom",
+        scrub: 1,
         onUpdate: function (self) {
-          var idx = Math.min(DATA.length - 1, Math.floor(self.progress * DATA.length));
-          setActive(idx);
+          var idx = Math.min(names.length - 1, Math.round(self.progress * (names.length - 1)));
+          if (idx !== current) {
+            current = idx;
+            if (names[idx]) scramble(names[idx]);
+          }
         }
-      });
-    } else {
-      var update = function () {
-        var rect = section.getBoundingClientRect();
-        var h = section.offsetHeight - window.innerHeight;
-        var progress = h > 0 ? (-rect.top) / h : 0;
-        progress = Math.max(0, Math.min(1, progress));
-        setActive(Math.min(DATA.length - 1, Math.floor(progress * DATA.length)));
-        ticking = false;
-      };
-      window.addEventListener("scroll", function () {
-        if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
-      }, { passive: true });
-      update();
-    }
-    setActive(0);
+      }
+    });
   }
 
   /* --------------------------------------------------------------------------
