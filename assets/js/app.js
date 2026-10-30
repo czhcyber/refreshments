@@ -296,6 +296,14 @@
         });
         optionsEl.appendChild(b);
       });
+
+      if (hasGsap) {
+        var parts = [questionEl].concat(Array.prototype.slice.call(optionsEl.children));
+        gsap.fromTo(parts,
+          { y: 14, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.35, stagger: 0.05, ease: "power2.out", overwrite: true }
+        );
+      }
     }
 
     function goBack() {
@@ -332,6 +340,11 @@
       resultEl.classList.remove("is-in");
       void resultEl.offsetWidth;
       resultEl.classList.add("is-in");
+
+      if (hasGsap) {
+        var rv = resultEl.querySelector(".quiz-result-visual");
+        if (rv) gsap.fromTo(rv, { scale: 0.85 }, { scale: 1, duration: 0.5, ease: "back.out(1.6)" });
+      }
 
       resultEl.querySelector("[data-restart]").addEventListener("click", function () {
         history = ["start"];
