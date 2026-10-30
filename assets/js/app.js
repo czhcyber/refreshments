@@ -538,6 +538,40 @@
   }
 
   /* --------------------------------------------------------------------------
+     10. Card hover — lift the card, make room for it
+     -------------------------------------------------------------------------- */
+  function initCardHover() {
+    var grid = document.getElementById("all-products");
+    if (!grid || !hasGsap) return;
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+    if (window.matchMedia && window.matchMedia("(hover: none)").matches) return;
+
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(".card"));
+    if (!cards.length) return;
+
+    var DUR = 0.3;
+    var EASE = "power2.out";
+    var SHIFT = 24;
+
+    cards.forEach(function (card, i) {
+      var left = cards[i - 1];
+      var right = cards[i + 1];
+
+      card.addEventListener("pointerenter", function () {
+        gsap.to(card, { x: 0, y: -10, scale: 1.04, duration: DUR, ease: EASE });
+        if (left && left.offsetTop === card.offsetTop) gsap.to(left, { x: -SHIFT, duration: DUR, ease: EASE });
+        if (right && right.offsetTop === card.offsetTop) gsap.to(right, { x: SHIFT, duration: DUR, ease: EASE });
+      });
+      card.addEventListener("pointerleave", function () {
+        gsap.to(card, { x: 0, y: 0, scale: 1, duration: DUR, ease: EASE });
+        if (left) gsap.to(left, { x: 0, duration: DUR, ease: EASE });
+        if (right) gsap.to(right, { x: 0, duration: DUR, ease: EASE });
+      });
+    });
+  }
+
+  /* --------------------------------------------------------------------------
      Boot
      -------------------------------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", function () {
@@ -552,5 +586,6 @@
     initNavTheme();
     initCloseup();
     initProductPage();
+    initCardHover();
   });
 })();
