@@ -349,12 +349,21 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .lineup-count { font-size: var(--fs-sm); color: rgba(255, 255, 255, 0.5); margin: 0 0 0.8rem; }
 .lineup-name {
+  position: relative;
   font-size: clamp(2.4rem, 6vw, 5rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 0.95;
   color: #fff;
   margin: 0 0 0.25em;
+}
+.ln-glitch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 .lineup-year { color: var(--accent); font-weight: 600; margin: 0 0 0.7em; }
 .lineup-tag { color: rgba(255, 255, 255, 0.7); font-size: var(--fs-base); margin: 0; max-width: 30ch; }

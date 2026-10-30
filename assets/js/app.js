@@ -406,33 +406,51 @@
     var names = track.querySelectorAll(".lineup-name");
     if (!names.length) return;
 
-    names.forEach(function (n) { n.setAttribute("data-text", n.textContent); });
+    names.forEach(function (h) {
+      if (h.querySelector(".ln-real")) return;
+      var real = document.createElement("span");
+      real.className = "ln-real";
+      real.textContent = h.textContent;
+      var glitch = document.createElement("span");
+      glitch.className = "ln-glitch";
+      glitch.setAttribute("aria-hidden", "true");
+      h.textContent = "";
+      h.appendChild(real);
+      h.appendChild(glitch);
+    });
 
     if (!hasGsap) return;
 
     var current = -1;
-    var scrambleTimer = null;
 
-    function scramble(el) {
-      var text = el.getAttribute("data-text");
-      if (!text) return;
+    function scramble(h) {
+      var real = h.querySelector(".ln-real");
+      var glitch = h.querySelector(".ln-glitch");
+      if (!real || !glitch) return;
+      var text = real.textContent;
       var glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&";
       var step = 0;
       var total = 15;
-      if (scrambleTimer) clearInterval(scrambleTimer);
-      scrambleTimer = setInterval(function () {
+      if (h._timer) clearInterval(h._timer);
+      glitch.style.visibility = "visible";
+      real.style.visibility = "hidden";
+      function tick() {
         var out = "";
         for (var i = 0; i < text.length; i++) {
           out += (step >= total || Math.random() < step / total) ? text.charAt(i) : glyphs.charAt(Math.floor(Math.random() * glyphs.length));
         }
-        el.textContent = out;
+        glitch.textContent = out;
         step++;
         if (step > total) {
-          clearInterval(scrambleTimer);
-          scrambleTimer = null;
-          el.textContent = text;
+          clearInterval(h._timer);
+          h._timer = null;
+          glitch.textContent = "";
+          glitch.style.visibility = "hidden";
+          real.style.visibility = "";
         }
-      }, 36);
+      }
+      tick();
+      h._timer = setInterval(tick, 36);
     }
 
     gsap.to(track, {
