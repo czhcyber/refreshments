@@ -188,6 +188,13 @@
 
       if (typeof dialog.showModal === "function") dialog.showModal();
       else dialog.setAttribute("open", "");
+
+      if (hasGsap) {
+        var panel = dialog.querySelector(".dlg-inner");
+        if (panel) {
+          gsap.fromTo(panel, { scale: 0.96, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "power2.out", overwrite: true });
+        }
+      }
     }
 
     function close() {
@@ -506,6 +513,31 @@
   }
 
   /* --------------------------------------------------------------------------
+     9. Products page — staggered cards + image curtain
+     -------------------------------------------------------------------------- */
+  function initProductPage() {
+    var grid = document.getElementById("all-products");
+    if (!grid || !hasGsap) return;
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    var cards = grid.querySelectorAll(".card");
+    var imgs = grid.querySelectorAll(".p-img");
+
+    gsap.from(cards, {
+      y: 40, opacity: 0, duration: 0.7, stagger: 0.08, ease: "power2.out",
+      scrollTrigger: { trigger: grid, start: "top 80%", once: true }
+    });
+    gsap.fromTo(imgs,
+      { clipPath: "inset(0% 100% 0% 0%)" },
+      {
+        clipPath: "inset(0% 0% 0% 0%)", duration: 1, stagger: 0.08, ease: "power3.inOut",
+        scrollTrigger: { trigger: grid, start: "top 80%", once: true }
+      }
+    );
+  }
+
+  /* --------------------------------------------------------------------------
      Boot
      -------------------------------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", function () {
@@ -519,5 +551,6 @@
     initLineup();
     initNavTheme();
     initCloseup();
+    initProductPage();
   });
 })();
