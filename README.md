@@ -36,7 +36,7 @@ Built with plain HTML, CSS and vanilla JavaScript, plus one small animation libr
 |---|---|
 | `index.html` | Home — cinematic hero, manifesto band, scroll lineup, product close-up, featured cards |
 | `products.html` | The collection — five product cards with a detail dialog and flavour meters |
-| `about.html` | The story — the idea, the collection strip, a short timeline, how it was built |
+| `about.html` | The story — the idea, a short timeline, how it was built |
 | `quiz.html` | Find your drink — a three-question interactive selector |
 
 Every page shares the same header, the full-screen menu and the footer, so all four pages

@@ -248,17 +248,6 @@ ul { margin: 0; padding: 0; list-style: none; }
   margin: 1.1rem 0 0;
 }
 
-/* Product strip (About page) */
-.strip {
-  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center;
-  gap: clamp(0.4rem, 2vw, 1.6rem);
-  padding: clamp(0.9rem, 2.4vw, 2rem);
-  background: var(--surface);
-  border-radius: 24px;
-}
-.strip-item { display: block; }
-.strip-img { width: clamp(46px, 8vw, 120px); height: auto; transition: transform .3s ease; }
-.strip-item:hover .strip-img { transform: translateY(-6px); }
 .hero-title { font-weight: 700; margin-bottom: 0.4em; }
 .hero-sub {
   font-size: clamp(1.05rem, 2vw, 1.3rem);
@@ -575,38 +564,37 @@ ul { margin: 0; padding: 0; list-style: none; }
   to { opacity: 1; transform: none; }
 }
 .quiz-result-visual { display: flex; justify-content: center; margin-bottom: 0.8rem; }
-.quiz-result-visual .p-img { height: 200px; width: auto; object-fit: contain; }
-.quiz-result-visual .p-visual { height: 200px; }
-.quiz-result-name { font-size: var(--fs-xl); font-weight: 700; margin-bottom: 0.2rem; }
-.quiz-result-tag { color: var(--gray); margin-bottom: 1.5rem; }
+.quiz-result-visual .p-img { height: clamp(220px, 32vh, 320px); width: auto; object-fit: contain; }
+.quiz-result-name { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+.quiz-result-tag { color: var(--gray); font-size: var(--fs-md); margin-bottom: 1.5rem; }
 .quiz-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; }
 
 /* ============================================================================
    Footer
    ============================================================================ */
 .footer {
-  background: var(--surface); border-top: 1px solid var(--divider);
+  background: #0a0a0a;
   padding: clamp(3rem, 8vw, 6rem) 0 2rem;
-  font-size: var(--fs-sm); color: var(--gray);
+  font-size: var(--fs-sm); color: rgba(255, 255, 255, 0.55);
 }
 .footer-big {
   font-size: clamp(3rem, 12vw, 9rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 0.9;
-  color: var(--text);
+  color: #fff;
   margin: 0 0 clamp(1.5rem, 4vw, 3rem);
 }
 .footer-bottom {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
   gap: 1rem 2rem;
-  border-top: 1px solid var(--divider);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   padding-top: 1.5rem;
 }
 .footer-note { max-width: 620px; margin: 0; }
 .footer-links { display: flex; gap: 1.4rem; margin: 0; }
-.footer-links a { color: var(--text); opacity: 0.8; }
-.footer-links a:hover { opacity: 1; }
+.footer-links a { color: rgba(255, 255, 255, 0.7); }
+.footer-links a:hover { color: #fff; }
 
 /* ============================================================================
    Scroll fade-in
